@@ -557,7 +557,6 @@ def Caustic_death():
             print("You swing your sword but it jumps out of the way.\n")
 
 def wolf1_combat():
-    print("wolf1_combat")
     attacks = 0
     which_wolves[0] += 1
     if move1[0] == 0:
@@ -757,7 +756,6 @@ def wolf1_combat():
             death()
     print("It skipped all of it")
 def wolf2_combat():
-    print("wolf2_combat")
     attacks = 0
     which_wolves[0] += 2
     if move2[0] == 0:
