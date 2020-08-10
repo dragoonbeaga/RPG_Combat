@@ -7,7 +7,7 @@ def Amiri():
     global weapon
     global rage
     rage = False
-    stats = {'hp': 30, 'hp_now': 30, 'str':{'val': 18, 'mod': 4}, 'dex':{'val': 14, 'mod':2}, 'con':{'val':14,'mod':2},
+    stats = {'hp': 35, 'hp_now': 35, 'str':{'val': 18, 'mod': 4}, 'dex':{'val': 14, 'mod':2}, 'con':{'val':14,'mod':2},
              'int':{'val': 10, 'mod':0},'wis':{'val':10, 'mod':0}, 'cha':{'val':12, 'mod':1}, 'ac': 18 }
     weapon = {'LBS_Mod': 6, 'LBS_Damage': '1d8t', 'LBS_Damage_Mod': 4, 'LBS_Rage_Damage': 10}
 
@@ -195,9 +195,11 @@ def combat_player():
                 wolf2_combat()
         elif choice == "5":
             actions += 1
+            move1[0] -= 1
             wolf1_death()
         elif choice == "6":
             actions += 1
+            move2[0] -= 1
             wolf2_death()
         else:
             print("That isn't a valid input")
@@ -207,7 +209,6 @@ def wolf1_death():
     attack_roll = attack()
     attack_roll += weapon['LBS_Mod']
     attack_roll += stats['str']['mod']
-    move1[0] -= 1
     if attack_roll >= wolf1_stats['ac']:
         damage = 0
         damage += dice.roll(weapon['LBS_Damage'])
@@ -219,49 +220,115 @@ def wolf1_death():
         elif wolf1_stats['hp'] >= 4:
             str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
                     " he still stands growling at you.\n"))
-            wolf1_combat()
         elif wolf1_stats['hp'] < 4:
             str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
                         " stands his ground growing at you.\n"))
-            wolf1_combat()
     else:
         print("You swing your sword but it jumps out of the way.\n")
+    wolf1_combat()
 
 def wolf1_death2():
     attack_roll = attack()
     attack_roll += weapon['LBS_Mod']
     attack_roll += stats['str']['mod']
-    if attack_roll >= wolf1_stats['ac']:
-        if rage:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Rage_Damage']
-            wolf1_stats['hp'] -= damage
-            if wolf1_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                        "covering you.\n"))
-            elif wolf1_stats['hp'] >= 4:
-                str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
-                        " he still stands growling at you.\n"))
-            elif wolf1_stats['hp'] < 4:
-                str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
-                        " stands his ground growing at you.\n"))
+    if penalty == 1:
+        if attack_roll >= wolf1_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
         else:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Damage_Mod']
-            wolf1_stats['hp'] -= damage
-            if wolf1_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                          "covering you.\n"))
-            elif wolf1_stats['hp'] >= 4:
-                str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
-                          " he still stands growling at you.\n"))
-            elif wolf1_stats['hp'] < 4:
-                str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
-                          " stands his ground growing at you.\n"))
-    else:
-        print("You swing your sword but it jumps out of the way.\n")
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 2:
+        attack_roll -= 5
+        if attack_roll >= wolf1_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 3:
+        attack_roll -= 10
+        if attack_roll >= wolf1_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf1_stats['hp'] -= damage
+                if wolf1_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf1_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf1_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
 def wolf2_death():
     attack_roll = attack()
     attack_roll += weapon['LBS_Mod']
@@ -278,86 +345,219 @@ def wolf2_death():
         elif wolf2_stats['hp'] >= 4:
             str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
                     " he still stands growling at you.\n"))
-            wolf2_combat()
         elif wolf2_stats['hp'] < 4:
             str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
                     " stands his ground growling at you.\n"))
-            wolf2_combat()
-
     else:
-        print("You missed")
+        print("You swing your sword but it jumps out of the way.\n")
+    wolf2_combat()
 def wolf2_death2():
     attack_roll = attack()
     attack_roll += weapon['LBS_Mod']
     attack_roll += stats['str']['mod']
-    if attack_roll >= wolf2_stats['ac']:
-        if rage:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Rage_Damage']
-            wolf2_stats['hp'] -= damage
-            print('rage')
-            if wolf2_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                        "covering you.\n"))
-            elif wolf2_stats['hp'] >= 4:
-                str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
-                        " he still stands growling at you.\n"))
-            elif wolf2_stats['hp'] < 4:
-                str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
-                        " stands his ground growing at you.\n"))
+    if penalty == 1:
+        if attack_roll >= wolf2_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
         else:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Damage_Mod']
-            wolf2_stats['hp'] -= damage
-            if wolf2_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                          "covering you.\n"))
-            elif wolf2_stats['hp'] >= 4:
-                str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
-                          " he still stands growling at you.\n"))
-            elif wolf2_stats['hp'] < 4:
-                str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
-                          " stands his ground growing at you.\n"))
-    else:
-        print("You swing your sword but it jumps out of the way.\n")
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 2:
+        attack_roll -= 5
+        if attack_roll >= wolf2_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 3:
+        attack_roll -= 10
+        if attack_roll >= wolf2_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                            "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                            " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                            " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                wolf2_stats['hp'] -= damage
+                if wolf2_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif wolf2_stats['hp'] >= 4:
+                    str(input("You swing your sword grazing across the wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif wolf2_stats['hp'] < 4:
+                    str(input("You swing your sword cutting deep into the wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
 def Caustic_death():
     attack_roll = attack()
     attack_roll += weapon['LBS_Mod']
     attack_roll += stats['str']['mod']
-    if attack_roll >= caustic_stats['ac']:
-        if rage:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Rage_Damage']
-            caustic_stats['hp'] -= damage
-            if caustic_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                          "covering you.\n"))
-            elif caustic_stats['hp'] >= 16:
-                str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
-                          " he still stands growling at you.\n"))
-            elif caustic_stats['hp'] < 15:
-                str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
-                          " stands his ground growing at you.\n"))
+    if penalty == 1:
+        if attack_roll >= caustic_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
         else:
-            damage = 0
-            damage += dice.roll(weapon['LBS_Damage'])
-            damage += weapon['LBS_Damage_Mod']
-            caustic_stats['hp'] -= damage
-            if caustic_stats['hp'] <= 0:
-                str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
-                          "covering you.\n"))
-            elif caustic_stats['hp'] >= 16:
-                str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
-                          " he still stands growling at you.\n"))
-            elif caustic_stats['hp'] < 15:
-                str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
-                          " stands his ground growing at you.\n"))
-    else:
-        print("You swing your sword but it jumps out of the way.\n")
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 2:
+        attack_roll -= 5
+        if attack_roll >= caustic_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
+    elif penalty == 3:
+        attack_roll -= 10
+        if attack_roll >= caustic_stats['ac']:
+            if rage:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Rage_Damage']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+            else:
+                damage = 0
+                damage += dice.roll(weapon['LBS_Damage'])
+                damage += weapon['LBS_Damage_Mod']
+                caustic_stats['hp'] -= damage
+                if caustic_stats['hp'] <= 0:
+                    str(input("You swing your sword with such strength you take its head clean off. Blood spews everywhere "
+                              "covering you.\n"))
+                elif caustic_stats['hp'] >= 16:
+                    str(input("You swing your sword grazing across the big wolf's chest. Blood sprays out of the wound but"
+                              " he still stands growling at you.\n"))
+                elif caustic_stats['hp'] < 15:
+                    str(input("You swing your sword cutting deep into the big wolf, he looks like he is in bad shape but he"
+                              " stands his ground growing at you.\n"))
+        else:
+            print("You swing your sword but it jumps out of the way.\n")
+
 def wolf1_combat():
+    print("wolf1_combat")
     attacks = 0
     which_wolves[0] += 1
     if move1[0] == 0:
@@ -398,7 +598,10 @@ def wolf1_combat():
                                   f" but you shake it off. You have {stats['hp_now']} health left\n"))
                     else:
                         str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        wolf2_combat()
+        if stats['hp_now'] >= 1:
+            wolf2_combat()
+        else:
+            death()
     elif move1[0] == 1 and wolf2_stats['hp'] <= 0:
         while attacks < 3:
             attacks += 1
@@ -429,7 +632,10 @@ def wolf1_combat():
                               f" but you shake it off. You have {stats['hp_now']} health left\n"))
                 else:
                     str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        combat2_player()
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
     elif move1[0] == 1:
         while attacks < 3:
             attacks += 1
@@ -460,9 +666,98 @@ def wolf1_combat():
                               f" but you shake it off. You have {stats['hp_now']} health left\n"))
                 else:
                     str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        combat2_player()
-
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
+    elif move1[0] == 2:
+        while attacks < 3:
+                attacks += 1
+                attack_roll = attack()
+                attack_roll += wolf1_attack['jaws']['val']
+                attack_roll += wolf1_attack['jaws']['mod']
+                if attacks == 1:
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barley move out of the way in time\n"))
+                elif attacks == 2:
+                    attack_roll -= 5
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+                elif attacks == 3:
+                    attack_roll -= 10
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+        if stats['hp_now'] >= 1:
+            move2[0] += 5
+            wolf2_combat()
+        else:
+            death()
+    elif move1[0] == 3 or move1[0] == 4 or move1[0] == 5:
+        while attacks < 3:
+                attacks += 1
+                attack_roll = attack()
+                attack_roll += wolf1_attack['jaws']['val']
+                attack_roll += wolf1_attack['jaws']['mod']
+                if attacks == 1:
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barley move out of the way in time\n"))
+                elif attacks == 2:
+                    attack_roll -= 5
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+                elif attacks == 3:
+                    attack_roll -= 10
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(wolf1_attack['jaws']['damage'])
+                        damage += wolf1_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
+    print("It skipped all of it")
 def wolf2_combat():
+    print("wolf2_combat")
     attacks = 0
     which_wolves[0] += 2
     if move2[0] == 0:
@@ -503,7 +798,10 @@ def wolf2_combat():
                                   f" but you shake it off. You have {stats['hp_now']} health left\n"))
                     else:
                         str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        wolf1_combat()
+        if stats['hp_now'] >= 1:
+            wolf1_combat()
+        else:
+            death()
     elif move2[0] == 1 and wolf1_stats['hp'] <= 0:
         while attacks < 3:
             attacks += 1
@@ -534,7 +832,10 @@ def wolf2_combat():
                               f" but you shake it off. You have {stats['hp_now']} health left\n"))
                 else:
                     str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        combat2_player()
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
     elif move2[0] == 1:
         while attacks < 3:
             attacks += 1
@@ -565,8 +866,95 @@ def wolf2_combat():
                               f" but you shake it off. You have {stats['hp_now']} health left\n"))
                 else:
                     str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
-        combat2_player()
-
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
+    elif move2[0] == 2:
+        while attacks < 3:
+            attacks += 1
+            attack_roll = attack()
+            attack_roll += wolf1_attack['jaws']['val']
+            attack_roll += wolf1_attack['jaws']['mod']
+            if attacks == 1:
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 2:
+                attack_roll -= 5
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 3:
+                attack_roll -= 10
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+        if stats['hp_now'] >= 1:
+            move1[0] += 5
+            wolf1_combat()
+        else:
+            death()
+    elif move2[0] == 3 or move2[0] == 4 or move2[0] == 5:
+        while attacks < 3:
+            attacks += 1
+            attack_roll = attack()
+            attack_roll += wolf1_attack['jaws']['val']
+            attack_roll += wolf1_attack['jaws']['mod']
+            if attacks == 1:
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 2:
+                attack_roll -= 5
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 3:
+                attack_roll -= 10
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(wolf1_attack['jaws']['damage'])
+                    damage += wolf1_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The wolf lunges out and bites your leg dealing {damage} damage"
+                                f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The wolf lunges out to bite you but you barely move out of the way in time\n"))
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
 def Caustic_Combat():
     attacks = 0
     which_wolves[0] += 4
@@ -592,6 +980,7 @@ def Caustic_Combat():
                     else:
                         str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
                 elif attacks == 3:
+                    attack_roll -= 5
                     if attack_roll >= stats['ac']:
                         damage = 0
                         damage += dice.roll(caustic_attack['jaws']['damage'])
@@ -599,11 +988,13 @@ def Caustic_Combat():
                         stats['hp_now'] -= damage
                         str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
                                   f" but you shake it off. You have {stats['hp_now']} health left\n"))
-                        wolf2_combat()
                     else:
                         str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
                                   f"in time\n"))
-                        wolf2_combat()
+            if stats['hp_now'] >= 1:
+                wolf2_combat()
+            else:
+                death()
         elif wolf2_stats['hp'] <= 0:
             while attacks < 3:
                 attacks += 1
@@ -625,6 +1016,7 @@ def Caustic_Combat():
                     else:
                         str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
                 elif attacks == 3:
+                    attack_roll -= 5
                     if attack_roll >= stats['ac']:
                         damage = 0
                         damage += dice.roll(caustic_attack['jaws']['damage'])
@@ -632,14 +1024,258 @@ def Caustic_Combat():
                         stats['hp_now'] -= damage
                         str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
                                   f" but you shake it off. You have {stats['hp_now']} health left\n"))
-                        wolf1_combat()
                     else:
                         str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
                                   f"in time\n"))
-                        wolf1_combat()
+            if stats['hp_now'] >= 1:
+                wolf1_combat()
+            else:
+                death()
     elif move3[0] == 1:
-        print("placehodler")
-
+        while attacks < 3:
+            attacks += 1
+            attack_roll = attack()
+            attack_roll += caustic_attack['jaws']['val']
+            attack_roll += caustic_attack['jaws']['mod']
+            if attacks == 1:
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 2:
+                attack_roll -= 5
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 3:
+                attack_roll -= 10
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                              f"in time\n"))
+        if stats['hp_now'] >= 1:
+            move2[0] += 3
+            wolf2_combat()
+        else:
+            death()
+    elif move3[0] == 2:
+        while attacks < 3:
+            attacks += 1
+            attack_roll = attack()
+            attack_roll += caustic_attack['jaws']['val']
+            attack_roll += caustic_attack['jaws']['mod']
+            if attacks == 1:
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 2:
+                attack_roll -= 5
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 3:
+                attack_roll -= 10
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                              f"in time\n"))
+        if stats['hp_now'] >= 1:
+            move1[0] += 3
+            wolf1_combat()
+        else:
+            death()
+    elif move3[0] == 3:
+        while attacks < 3:
+            attacks += 1
+            attack_roll = attack()
+            attack_roll += caustic_attack['jaws']['val']
+            attack_roll += caustic_attack['jaws']['mod']
+            if attacks == 1:
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 2:
+                attack_roll -= 5
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+            elif attacks == 3:
+                attack_roll -= 10
+                if attack_roll >= stats['ac']:
+                    damage = 0
+                    damage += dice.roll(caustic_attack['jaws']['damage'])
+                    damage += caustic_attack['jaws']['d_mod']
+                    stats['hp_now'] -= damage
+                    str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                              f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                else:
+                    str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                              f"in time\n"))
+        if stats['hp_now'] >= 1:
+            combat2_player()
+        else:
+            death()
+    elif move3[0] == 4:
+        if wolf1_stats['hp'] <= 0:
+            while attacks < 3:
+                attacks += 1
+                attack_roll = attack()
+                attack_roll += caustic_attack['jaws']['val']
+                attack_roll += caustic_attack['jaws']['mod']
+                if attacks == 1:
+                    str(input(f"The wolf in the trees howls, then charges toward you. As soon as it reaches you it "
+                              f"attacks\n"))
+                elif attacks == 2:
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+                elif attacks == 3:
+                    attack_roll -= 5
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                                  f"in time\n"))
+            if stats['hp_now'] >= 1:
+                move2[0] += 3
+                wolf2_combat()
+            else:
+                death()
+    elif move3[0] == 5:
+        if wolf1_stats['hp'] <= 0:
+            while attacks < 3:
+                attacks += 1
+                attack_roll = attack()
+                attack_roll += caustic_attack['jaws']['val']
+                attack_roll += caustic_attack['jaws']['mod']
+                if attacks == 1:
+                    str(input(f"The wolf in the trees howls, then charges toward you. As soon as it reaches you it "
+                              f"attacks\n"))
+                elif attacks == 2:
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(
+                            f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+                elif attacks == 3:
+                    attack_roll -= 5
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(
+                            f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                            f"in time\n"))
+            if stats['hp_now'] >= 1:
+                move1[0] += 3
+                wolf1_combat()
+            else:
+                death()
+    elif move3[0] == 6:
+        if wolf1_stats['hp'] <= 0:
+            while attacks < 3:
+                attacks += 1
+                attack_roll = attack()
+                attack_roll += caustic_attack['jaws']['val']
+                attack_roll += caustic_attack['jaws']['mod']
+                if attacks == 1:
+                    str(input(f"The wolf in the trees howls, then charges toward you. As soon as it reaches you it "
+                              f"attacks\n"))
+                elif attacks == 2:
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges out and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(
+                            f"The large wolf lunges out to bite you but you barely move out of the way in time\n"))
+                elif attacks == 3:
+                    attack_roll -= 5
+                    if attack_roll >= stats['ac']:
+                        damage = 0
+                        damage += dice.roll(caustic_attack['jaws']['damage'])
+                        damage += caustic_attack['jaws']['d_mod']
+                        stats['hp_now'] -= damage
+                        str(input(f"The large wolf lunges back at you and bites your arm dealing {damage} damage"
+                                  f" but you shake it off. You have {stats['hp_now']} health left\n"))
+                    else:
+                        str(input(
+                            f"The large wolf lunges back at your out to bite you but you barely move out of the way "
+                            f"in time\n"))
+            if stats['hp_now'] >=1:
+                combat2_player()
+            else:
+                death()
 def combat2_player():
     str(input(f"Your current health is {stats['hp_now']}. You can spend up to 2 action this turn to drink from an "
               f"Elixir of life to get back up to 6 health"))
@@ -651,6 +1287,7 @@ def combat2_player():
     hidden = 0
     move1[0] = 0
     move2[0] = 0
+    move3[0] = 0
     penalty = 0
     print("You get another 3 actions this turn. choose wisely")
     if which_wolves[0] == 3:
@@ -678,7 +1315,7 @@ def combat2_player():
                     elif hidden == 3:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -687,7 +1324,7 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                  "slain approaching."))
+                                  " slain approaching.\n"))
                             print(f"{action_list[3]}")
                         elif wolf1_stats['hp'] <= 0:
                             print(f"{action_list[1]}\n{action_list[3]}")
@@ -699,18 +1336,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -719,18 +1356,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -745,8 +1382,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -755,18 +1392,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -775,8 +1412,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -800,7 +1437,7 @@ def combat2_player():
                     elif hidden == 15:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -809,7 +1446,7 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                  "slain approaching."))
+                                        " slain approaching.\n"))
                             print(f"{action_list[3]}")
                         elif wolf2_stats['hp'] <= 0:
                             print(f"{action_list[0]}\n{action_list[3]}")
@@ -821,18 +1458,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -841,18 +1478,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      "slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -867,18 +1504,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -887,8 +1524,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -897,8 +1534,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -929,7 +1566,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -953,7 +1590,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -963,7 +1600,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -974,25 +1611,25 @@ def combat2_player():
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
                             wolf1_combat()
                 else:
                     print("That is not a valid choice")
-        else:
+        elif not rage:
             print(f"{action_list[0]}\n{action_list[1]}\n{action_list[3]}\n{action_list[4]}")
             while actions < 3:
                 choice = str(input(f"Please enter your choice:"))
@@ -1015,7 +1652,7 @@ def combat2_player():
                     elif hidden == 3:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1024,7 +1661,7 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
+                                      " slain approaching.\n"))
                             print(f"{action_list[3]}")
                         elif wolf1_stats['hp'] <= 0:
                             print(f"{action_list[1]}\n{action_list[3]}\n{action_list[4]}")
@@ -1036,18 +1673,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1056,18 +1693,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1082,8 +1719,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1092,18 +1729,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1112,8 +1749,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1128,8 +1765,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1138,18 +1775,18 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1158,8 +1795,8 @@ def combat2_player():
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1183,7 +1820,7 @@ def combat2_player():
                     elif hidden == 15:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1192,7 +1829,7 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
+                                      " slain approaching.\n"))
                             print(f"{action_list[3]}")
                         elif wolf2_stats['hp'] <= 0:
                             print(f"{action_list[0]}\n{action_list[3]}\n{action_list[4]}")
@@ -1204,18 +1841,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1224,18 +1861,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1250,18 +1887,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1270,8 +1907,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1280,8 +1917,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1296,18 +1933,18 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1316,8 +1953,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1326,8 +1963,8 @@ def combat2_player():
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1358,7 +1995,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1382,7 +2019,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1392,7 +2029,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 2
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move2[0] += 2
@@ -1403,18 +2040,18 @@ def combat2_player():
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1436,8 +2073,8 @@ def combat2_player():
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1445,8 +2082,8 @@ def combat2_player():
                     elif hidden == 43:
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1477,18 +2114,18 @@ def combat2_player():
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf1_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 3
+                                      " slain approaching.\n"))
+                            move3[0] += 6
                             Caustic_Combat()
                         elif wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         elif wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 2
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1497,8 +2134,8 @@ def combat2_player():
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf1_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 4
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1507,8 +2144,8 @@ def combat2_player():
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf2_stats['hp'] <= 0:
                             str(input("On the edge of the forest you see a wolf double the size that you just"
-                                      "slain approaching."))
-                            move3[0] += 1
+                                      " slain approaching.\n"))
+                            move3[0] += 5
                             Caustic_Combat()
                         else:
                             move1[0] += 2
@@ -1545,12 +2182,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 6:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}\n{action_list[4]}")
                         elif caustic_stats['hp'] <= 0:
@@ -1560,7 +2197,7 @@ def combat2_player():
                     elif hidden == 7:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1568,12 +2205,12 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 11:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1581,8 +2218,8 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 13:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
@@ -1595,12 +2232,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 18:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1608,16 +2245,16 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 27:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
@@ -1630,12 +2267,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 32:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1643,16 +2280,16 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "3":
                     hidden += 5
                     actions += 1
@@ -1680,7 +2317,7 @@ def combat2_player():
                     elif hidden == 6:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             print(f"{action_list[0]}\n{action_list[3]}\n{action_list[4]}")
                         elif wolf1_stats['hp'] <= 0:
@@ -1690,7 +2327,7 @@ def combat2_player():
                     elif hidden == 7:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -1703,7 +2340,7 @@ def combat2_player():
                     elif hidden == 11:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -1722,7 +2359,7 @@ def combat2_player():
                     elif hidden == 18:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -1757,7 +2394,7 @@ def combat2_player():
                     elif hidden == 32:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -1812,8 +2449,8 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -1822,8 +2459,8 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 17:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -1857,7 +2494,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1865,8 +2502,8 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 38:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -1876,8 +2513,8 @@ def combat2_player():
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
-                        move1[0] += 2
-                        wolf1_combat()
+                        move3[0] += 0
+                        Caustic_Combat()
                     elif hidden == 39:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -1886,15 +2523,15 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         if caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "5":
                     hidden += 26
                     actions += 1
@@ -1920,7 +2557,7 @@ def combat2_player():
                     elif hidden == 32:
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1928,24 +2565,24 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         print("A red mist surrounds you as you give into your rage\n")
                         if caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 else:
                     print("That is not a valid choice")
         if rage:
@@ -1974,12 +2611,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 6:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}")
                         elif caustic_stats['hp'] <= 0:
@@ -1989,7 +2626,7 @@ def combat2_player():
                     elif hidden == 7:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -1997,12 +2634,12 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 11:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -2010,8 +2647,8 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 13:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
@@ -2024,12 +2661,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 18:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -2037,16 +2674,16 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 27:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
@@ -2059,12 +2696,12 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 32:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -2072,16 +2709,16 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "3":
                     penalty += 1
                     hidden += 5
@@ -2109,7 +2746,7 @@ def combat2_player():
                     elif hidden == 6:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             print(f"{action_list[0]}\n{action_list[3]}")
                         elif wolf1_stats['hp'] <= 0:
@@ -2119,7 +2756,7 @@ def combat2_player():
                     elif hidden == 7:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -2132,7 +2769,7 @@ def combat2_player():
                     elif hidden == 11:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -2151,7 +2788,7 @@ def combat2_player():
                     elif hidden == 18:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -2186,7 +2823,7 @@ def combat2_player():
                     elif hidden == 32:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
@@ -2241,8 +2878,8 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2251,8 +2888,8 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 17:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2286,7 +2923,7 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf1_stats['hp'] <= 0:
                             move3[0] += 1
                             Caustic_Combat()
@@ -2294,8 +2931,8 @@ def combat2_player():
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 38:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2305,8 +2942,8 @@ def combat2_player():
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
-                        move1[0] += 2
-                        wolf1_combat()
+                        move3[0] += 0
+                        Caustic_Combat()
                     elif hidden == 39:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2315,70 +2952,21 @@ def combat2_player():
                             move3[0] += 1
                             Caustic_Combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         if caustic_stats['hp'] <= 0:
                             move1[0] += 3
                             wolf1_combat()
                         else:
-                            move1[0] += 2
-                            wolf1_combat()
-                elif choice == "5":
-                    hidden += 26
-                    actions += 1
-                    rage = True
-                    if hidden == 26:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        print(f"{action_list[0]}\n{action_list[2]}\n{action_list[3]}")
-                    elif hidden == 27:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        if wolf1_stats['hp'] <= 0:
-                            print(f"{action_list[2]}\n{action_list[3]}")
-                        else:
-                            print(f"{action_list[0]}\n{action_list[2]}\n{action_list[3]}")
-                    elif hidden == 31:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        if caustic_stats['hp'] <= 0:
-                            print(f"{action_list[0]}\n{action_list[3]}")
-                        else:
-                            print(f"{action_list[0]}\n{action_list[2]}\n{action_list[3]}")
-                    elif hidden == 38:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        print(f"{action_list[0]}\n{action_list[2]}\n{action_list[3]}")
-                    elif hidden == 32:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        if wolf1_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
-                        elif wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 0
                             Caustic_Combat()
-                        elif caustic_stats['hp'] <= 0:
-                            move1[0] += 3
-                            wolf1_combat()
-                        else:
-                            move1[0] += 2
-                            wolf1_combat()
-                    elif hidden == 39:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        if wolf1_stats['hp'] <= 0:
-                            move3[0] += 1
-                            Caustic_Combat()
-                        else:
-                            move1[0] += 2
-                            wolf1_combat()
-                    elif hidden == 43:
-                        print("A red mist surrounds you as you give into your rage\n")
-                        if caustic_stats['hp'] <= 0:
-                            move1[0] += 3
-                            wolf1_combat()
-                        else:
-                            move1[0] += 2
-                            wolf1_combat()
                 else:
                     print("That is not a valid choice")
     elif which_wolves[0] == 6:
         which_wolves[0] -= 6
+        move2[0] += 1
+        move3[0] += 1
         if not rage:
             print(f"{action_list[1]}\n{action_list[2]}\n{action_list[3]}\n{action_list[4]}")
             while actions < 3:
@@ -2387,7 +2975,7 @@ def combat2_player():
                     penalty += 1
                     hidden += 1
                     actions += 1
-                    if hidden == 2:
+                    if hidden == 1:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}\n{action_list[4]}")
@@ -2402,15 +2990,15 @@ def combat2_player():
                     elif hidden == 3:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 6:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}\n{action_list[4]}")
                         elif caustic_stats['hp'] <= 0:
@@ -2420,29 +3008,29 @@ def combat2_player():
                     elif hidden == 7:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 11:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 13:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
@@ -2452,32 +3040,32 @@ def combat2_player():
                     elif hidden == 14:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 18:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 27:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
@@ -2487,32 +3075,32 @@ def combat2_player():
                     elif hidden == 28:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 32:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "3":
                     penalty += 1
                     hidden += 5
@@ -2540,7 +3128,7 @@ def combat2_player():
                     elif hidden == 6:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             print(f"{action_list[1]}\n{action_list[3]}\n{action_list[4]}")
                         elif wolf2_stats['hp'] <= 0:
@@ -2550,12 +3138,12 @@ def combat2_player():
                     elif hidden == 7:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
-                            move2[0] += 3
+                            move2[0] += 4
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -2563,12 +3151,12 @@ def combat2_player():
                     elif hidden == 11:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -2582,12 +3170,12 @@ def combat2_player():
                     elif hidden == 18:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -2617,12 +3205,12 @@ def combat2_player():
                     elif hidden == 32:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -2669,21 +3257,21 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 17:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2717,16 +3305,16 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 38:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -2736,25 +3324,25 @@ def combat2_player():
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
-                        move2[0] += 2
-                        wolf2_combat()
+                        move3[0] += 0
+                        Caustic_Combat()
                     elif hidden == 39:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         if caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "5":
                     hidden += 26
                     actions += 1
@@ -2780,43 +3368,43 @@ def combat2_player():
                     elif hidden == 32:
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         print("A red mist surrounds you as you give into your rage\n")
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         print("A red mist surrounds you as you give into your rage\n")
                         if caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 else:
                     print('That is not a valid choice')
         elif rage:
             print(f"{action_list[1]}\n{action_list[2]}\n{action_list[3]}")
             while actions < 3:
                 choice = str(input(f"Please enter your choice:"))
-                if choice == "1":
+                if choice == "2":
                     penalty += 1
                     hidden += 1
                     actions += 1
-                    if hidden == 2:
+                    if hidden == 1:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}")
@@ -2831,15 +3419,15 @@ def combat2_player():
                     elif hidden == 3:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 6:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
                             print(f"{action_list[2]}\n{action_list[3]}")
                         elif caustic_stats['hp'] <= 0:
@@ -2849,29 +3437,29 @@ def combat2_player():
                     elif hidden == 7:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 11:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 13:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
@@ -2881,32 +3469,32 @@ def combat2_player():
                     elif hidden == 14:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 18:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 27:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
@@ -2916,32 +3504,32 @@ def combat2_player():
                     elif hidden == 28:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 32:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 39:
                         wolf2_death2()
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 elif choice == "3":
                     penalty += 1
                     hidden += 5
@@ -2969,7 +3557,7 @@ def combat2_player():
                     elif hidden == 6:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             print(f"{action_list[1]}\n{action_list[3]}")
                         elif wolf2_stats['hp'] <= 0:
@@ -2979,12 +3567,12 @@ def combat2_player():
                     elif hidden == 7:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -2992,12 +3580,12 @@ def combat2_player():
                     elif hidden == 11:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -3011,12 +3599,12 @@ def combat2_player():
                     elif hidden == 18:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -3046,12 +3634,12 @@ def combat2_player():
                     elif hidden == 32:
                         Caustic_death()
                         if caustic_stats['hp'] <= 0 and wolf2_stats['hp'] <= 0:
-                            break
+                            win()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
                             move3[0] += 0
@@ -3098,21 +3686,21 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 25:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 17:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -3146,16 +3734,16 @@ def combat2_player():
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0 and caustic_stats['hp'] <= 0:
-                            break
+                            win()
                         elif wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         elif caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 38:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
@@ -3165,25 +3753,25 @@ def combat2_player():
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
-                        move2[0] += 2
-                        wolf2_combat()
+                        move3[0] += 0
+                        Caustic_Combat()
                     elif hidden == 39:
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         if wolf2_stats['hp'] <= 0:
-                            move3[0] += 1
+                            move3[0] += 2
                             Caustic_Combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                     elif hidden == 43:
                         if caustic_stats['hp'] <= 0:
                             move2[0] += 3
                             wolf2_combat()
                         else:
-                            move2[0] += 2
-                            wolf2_combat()
+                            move3[0] += 0
+                            Caustic_Combat()
                 else:
                     print("That is not a valid choice")
     elif which_wolves[0] == 1:
@@ -3195,43 +3783,43 @@ def combat2_player():
                 if choice == "1":
                     penalty += 1
                     hidden += 1
-                    actions +=1
+                    actions += 1
                     if hidden == 1:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             print(f"{action_list[0]}\n{action_list[3]}")
                     elif hidden == 2:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             print(f"{action_list[0]}\n{action_list[3]}")
                     elif hidden == 3:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             move1[0] += 4
                             wolf1_combat()
                     elif hidden == 6:
                         wolf1_death2()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             print(f"{action_list[0]}\n{action_list[3]}")
                     elif hidden == 7:
                         wolf1_death()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             move1[0] += 4
                             wolf1_combat()
                     elif hidden == 11:
                         wolf1_death()
                         if wolf1_stats['hp'] <= 0:
-                            break
+                            win()
                         else:
                             move1[0] += 4
                             wolf1_combat()
@@ -3245,7 +3833,18 @@ def combat2_player():
                         potion = dice.roll('1d6t')
                         stats['hp_now'] += potion
                         str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[0]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
                         print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move1[0] += 4
+                        wolf1_combat()
         elif not rage:
             print(f"{action_list[0]}\n{action_list[3]}\n{action_list[4]}")
             while actions < 3:
@@ -3253,17 +3852,515 @@ def combat2_player():
                 if choice == "1":
                     penalty += 1
                     hidden += 1
-                    actions +=1
+                    actions += 1
+                    if hidden == 1:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 2:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 3:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move1[0] += 4
+                            wolf1_combat()
+                    elif hidden == 6:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        wolf1_death()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move1[0] += 4
+                            wolf1_combat()
+                    elif hidden == 11:
+                        wolf1_death()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move1[0] += 4
+                            wolf1_combat()
+                    elif hidden == 13:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move1[0] += 4
+                            wolf1_combat()
+                    elif hidden == 18:
+                        wolf1_death2()
+                        if wolf1_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move1[0] += 4
+                            wolf1_combat()
+                elif choice == "4":
+                    if hidden == 5:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[0]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 10:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[0]}{action_list[4]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[0]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move1[0] += 4
+                        wolf1_combat()
+                    elif hidden == 17:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move1[0] += 4
+                        wolf1_combat()
+                elif choice == "5":
+                    if hidden == 12:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 13:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move1[0] += 4
+                        wolf1_combat()
+                    elif hidden == 17:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[0]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move1[0] += 4
+                        wolf1_combat()
+                    elif hidden == 22:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move1[0] += 4
+                        wolf1_combat()
     elif which_wolves[0] == 2:
         which_wolves[0] -= 2
-        print('place')
+        if rage:
+            print(f"{action_list[1]}\n{action_list[3]}")
+            while actions < 3:
+                choice = str(input(f"Please enter your choice:"))
+                if choice == "2":
+                    penalty += 1
+                    hidden += 1
+                    actions += 1
+                    if hidden == 1:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 2:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 3:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 6:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        wolf2_death()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 11:
+                        wolf2_death()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                elif choice == "4":
+                    if hidden == 5:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 10:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move2[0] += 4
+                        wolf2_combat()
+        elif not rage:
+            print(f"{action_list[1]}\n{action_list[3]}\n{action_list[4]}")
+            while actions < 3:
+                choice = str(input(f"Please enter your choice:"))
+                if choice == "2":
+                    penalty += 1
+                    hidden += 1
+                    actions += 1
+                    if hidden == 1:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 2:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 3:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 6:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        wolf2_death()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 11:
+                        wolf2_death()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 13:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                    elif hidden == 18:
+                        wolf2_death2()
+                        if wolf2_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move2[0] += 4
+                            wolf2_combat()
+                elif choice == "4":
+                    if hidden == 5:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 10:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}{action_list[4]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move2[0] += 4
+                        wolf2_combat()
+                    elif hidden == 17:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move2[0] += 4
+                        wolf2_combat()
+                elif choice == "5":
+                    if hidden == 12:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 13:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move2[0] += 4
+                        wolf2_combat()
+                    elif hidden == 17:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[1]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move2[0] += 4
+                        wolf2_combat()
+                    elif hidden == 22:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move2[0] += 4
+                        wolf2_combat()
     elif which_wolves[0] == 4:
         which_wolves[0] -= 4
-        print('place')
-    elif which_wolves[0] == 0:
-        print("You killed all the wolves in the area!  You win the game congrats!")
+        if rage:
+            print(f"{action_list[2]}\n{action_list[3]}")
+            while actions < 3:
+                choice = str(input(f"Please enter your choice:"))
+                if choice == "3":
+                    penalty += 1
+                    hidden += 1
+                    actions += 1
+                    if hidden == 1:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 2:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 3:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 6:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 11:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                elif choice == "4":
+                    if hidden == 5:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 10:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move3[0] += 3
+                        Caustic_Combat()
+        elif not rage:
+            print(f"{action_list[2]}\n{action_list[3]}\n{action_list[4]}")
+            while actions < 3:
+                choice = str(input(f"Please enter your choice:"))
+                if choice == "3":
+                    penalty += 1
+                    hidden += 1
+                    actions += 1
+                    if hidden == 1:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 2:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 3:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 6:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 7:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 11:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 13:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                    elif hidden == 18:
+                        Caustic_death()
+                        if caustic_stats['hp'] <= 0:
+                            win()
+                        else:
+                            move3[0] += 3
+                            Caustic_Combat()
+                elif choice == "4":
+                    if hidden == 5:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 10:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}{action_list[4]}")
+                    elif hidden == 6:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}\n{action_list[3]}{action_list[4]}")
+                    elif hidden == 7:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move3[0] += 3
+                        Caustic_Combat()
+                    elif hidden == 17:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        potion = dice.roll('1d6t')
+                        stats['hp_now'] += potion
+                        str(input(f"You restore {potion} health. Your health is now at {stats['hp_now']}"))
+                        move3[0] += 3
+                        Caustic_Combat()
+                elif choice == "5":
+                    if hidden == 12:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 13:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 14:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move3[0] += 3
+                        Caustic_Combat()
+                    elif hidden == 17:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        print(f"{action_list[2]}\n{action_list[3]}")
+                    elif hidden == 18:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move3[0] += 3
+                        Caustic_Combat()
+                    elif hidden == 22:
+                        print("A red mist surrounds you as you give into your rage\n")
+                        move3[0] += 3
+                        Caustic_Combat()
 
 
+def win():
+    print("You killed all the wolves in the area!  You win the game congrats!")
+    exit()
+def death():
+    print("You have fallen in combat. The wolves feast on your body.")
+    exit()
 
 
 
@@ -3272,5 +4369,4 @@ wolf1()
 wolf2()
 which_wolves = [0]
 Caustic_Wolf()
-#combat2_player()
 story_intro()
