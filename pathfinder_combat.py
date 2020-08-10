@@ -1,3 +1,8 @@
+"""This story is owned by Paizo.com."""
+"""Story intro and first combat from The fall of Plaguestone by Jason Bulmah"""
+
+"""Coded by James Peterson"""
+
 import dice
 
 # Character
